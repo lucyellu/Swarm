@@ -5,6 +5,8 @@ import replicate
 import openai
 import os
 
+from PIL import Image
+
 """
 Example usage:
 python3 dallephone.py nighthawks.jpeg 5
@@ -16,8 +18,8 @@ python3 dallephone.py nighthawks.jpeg 5
 dalle_api = "https://api.openai.com/v1/images/generations"
 
 # set the API key
-openai.api_key = os.environ("OPENAI_API_KEY")
-REPLICATE_API_TOKEN=os.environ("REPLICATE_API_TOKEN")
+openai.api_key = os.getenv("OPENAI_API_KEY")
+REPLICATE_API_TOKEN=os.getenv("REPLICATE_API_TOKEN")
 
 def get_caption_for_image(image_path):
     model = replicate.models.get("salesforce/blip")
@@ -57,6 +59,8 @@ image_file = args.image_file
 image_name = image_file.split('.')[0]
 n = args.n
 
+#img = Image.open(image_file)
+#img.show()
 # loop over the iterations
 for i in range(n):
     # describe the image using DALL-E API
@@ -69,6 +73,8 @@ for i in range(n):
     print(new_image_file_location)
     # use the new image URL as the starting point for the next iteration
     image_file = new_image_file_location
+    #img = Image.open(image_file)
+    #img.show()
 
     # print the iteration number and the new image URL
     print(f"Iteration {i+1}: {new_image_file_location}")
