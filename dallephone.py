@@ -30,7 +30,6 @@ def get_caption_for_image(image_path):
         'task': "image_captioning",
     }
     output = version.predict(**inputs)
-    print(output)
     return output
 
 def get_image_for_description(description, new_image_name):
