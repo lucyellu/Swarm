@@ -73,8 +73,8 @@ for i in range(n):
     print(new_image_file_location)
     # use the new image URL as the starting point for the next iteration
     image_file = new_image_file_location
-    #img = Image.open(image_file)
-    #img.show()
+    img = Image.open(image_file)
+    img.show()
 
     # print the iteration number and the new image URL
     print(f"Iteration {i+1}: {new_image_file_location}")
