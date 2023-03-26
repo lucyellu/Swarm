@@ -8,10 +8,10 @@ def round_robin_storytelling(api_key, openai_key, story_so_far, model="claude-v1
         next_token_anthropic = get_next_token_anthropic(api_key, story_so_far, model)
         story_so_far += next_token_anthropic
 
-     #   next_token_openai = get_next_token_openai(openai_key, story_so_far)
-    #    story_so_far += next_token_openai
+        next_token_openai = get_next_token_openai(openai_key, story_so_far)
+        story_so_far += next_token_openai
 
-        print(next_token_anthropic)
+        print(story_so_far)
 
 def get_next_token_anthropic(api_key, story_so_far, model="claude-v1"):
     client = anthropic.Client(api_key)
