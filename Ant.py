@@ -8,40 +8,44 @@ def round_robin_storytelling(api_key, openai_key, story_so_far, model="claude-v1
         next_token_anthropic = get_next_token_anthropic(api_key, story_so_far, model)
         story_so_far += next_token_anthropic
 
-        next_token_openai = get_next_token_openai(openai_key, story_so_far)
-        story_so_far += next_token_openai
+     #   next_token_openai = get_next_token_openai(openai_key, story_so_far)
+    #    story_so_far += next_token_openai
 
-        print(story_so_far)
+        print(next_token_anthropic)
 
 def get_next_token_anthropic(api_key, story_so_far, model="claude-v1"):
     client = anthropic.Client(api_key)
 
-    prompt = f"{anthropic.HUMAN_PROMPT} Round-robin storytelling game:\n\nStory so far: {story_so_far}\n\n{anthropic.AI_PROMPT}Next token:"
+    #prompt = f"{anthropic.HUMAN_PROMPT} Round-robin storytelling game:\n\nStory so far: {story_so_far}\n\n{anthropic.AI_PROMPT}Next token:"
+    prompt = f"{anthropic.HUMAN_PROMPT} You are participating in a round-robin storytelling game, where each player contributes one token at a time to create a coherent and grammatically correct story. Your task is to add the next token, ensuring that the sentence remains both grammatically and syntactically accurate. Only output a single next token, do not include any additional information. Please include spaces as approprate at the beginning of the token: {story_so_far}{anthropic.AI_PROMPT}"
 
     response = client.completion(
         prompt=prompt,
         model=model,
-        max_tokens_to_sample=1,
+        max_tokens_to_sample=5,
         stop_sequences=["."]
     )
 
-    next_token = response['completion'].strip()
+    next_token = response['completion']
     return next_token
 
 def get_next_token_openai(openai_key, story_so_far):
     openai.api_key = openai_key
 
+    #messages = [
+    #    {"role": "user", "content": f"Round-robin storytelling game:\n\nStory so far: {story_so_far}\n\nNext token:"}
+    #]
     messages = [
-        {"role": "user", "content": f"{story_so_far}"}
+        {"role": "user", "content": f"You are participating in a round-robin storytelling game, where each player contributes one token at a time to create a coherent and grammatically correct story. Your task is to add the next token, ensuring that the sentence remains both grammatically and syntactically accurate. Only output the next token, do not include any additional information.{story_so_far}"}
     ]
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=messages,
-        max_tokens=1
+        max_tokens=5
     )
 
-    next_token = response['choices'][0]['message']['content'].strip()
+    next_token = response['choices'][0]['message']['content']
     return next_token
 
 def main():
